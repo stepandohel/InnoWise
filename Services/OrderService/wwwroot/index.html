@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>SignalR Chat - Metanit.com</title>
+</head>
+<body>
+
+    <div id="chatroom"></div>
+    <script src="js/signalr/dist/browser/signalr.min.js"></script>
+    <script>
+        const hubConnection =  connection = new signalR.HubConnectionBuilder()
+                .withUrl("https://localhost:7029/peopleHub")
+                .build();
+        
+        hubConnection.on("Send", function (data) {
+ 
+            let elem = document.createElement("p");
+            elem.appendChild(document.createTextNode(data));
+            let firstElem = document.getElementById("chatroom").firstChild;
+            document.getElementById("chatroom").insertBefore(elem, firstElem);
+ 
+        });
+ 
+
+ 
+        hubConnection.start();
+    </script>
+</body>
+</html>

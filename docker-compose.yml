@@ -1,0 +1,15 @@
+version: '3.4'
+
+services:
+  orderservice:
+    image: ${DOCKER_REGISTRY-}orderservice
+    build:
+      context: .
+      dockerfile: Services/OrderService/Dockerfile
+
+  userservice:
+    image: ${DOCKER_REGISTRY-}userservice
+    build:
+      context: .
+      dockerfile: Services/UserService/Dockerfile
+
