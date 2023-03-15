@@ -24,14 +24,6 @@ namespace ELK
                 .WriteTo.Elasticsearch(ElasticSearchConfig.ConfigureELS(configuration, env))
                 .CreateLogger();
 
-            //host.UseSerilog((ctx, lc) => lc
-            //    .Enrich.FromLogContext()
-            //    .Enrich.WithExceptionDetails()
-            //    .WriteTo.Debug()
-            //    .WriteTo.Console()
-            //    .WriteTo.Elasticsearch(ElasticSearchConfig.ConfigureELS(configuration, env))
-            //    .ReadFrom.Configuration(ctx.Configuration));
-
             host.UseSerilog();
             return host;
         }

@@ -10,7 +10,7 @@
     <script src="js/signalr/dist/browser/signalr.min.js"></script>
     <script>
         const hubConnection =  connection = new signalR.HubConnectionBuilder()
-                .withUrl("https://localhost:7029/peopleHub")
+                .withUrl("https://dogelstep.azurewebsites.net/peopleHub")
                 .build();
         
         hubConnection.on("Send", function (data) {

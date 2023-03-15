@@ -25,10 +25,10 @@ namespace OrderService.Controllers
                 Name = name,
                 Age = age,
                 Key = key
-            },x => x.SetRoutingKey("Order"));
+            }
+            //,x => x.SetRoutingKey("Order")
+            );
 
-
-            //_mqService.SendMessage(message);
             _logger.LogWarning("Message sended from Order");
 
             return Ok("Сообщение отправлено");

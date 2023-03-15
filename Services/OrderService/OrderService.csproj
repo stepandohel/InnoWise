@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Shared\ELK\ELK.csproj" />
     <ProjectReference Include="..\..\Shared\MessageBus\MessageBus.csproj" />
+    <ProjectReference Include="..\..\Shared\SignalRLib\SignalRLib.csproj" />
   </ItemGroup>
 
 </Project>

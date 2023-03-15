@@ -25,7 +25,9 @@ namespace UserService.Controllers
                 Name = name,
                 Age = age,
                 Key = key
-            }, x => x.SetRoutingKey("User"));
+            }
+            //, x => x.SetRoutingKey("User")
+            );
 
             _logger.LogWarning("Message sended from UserService");
 

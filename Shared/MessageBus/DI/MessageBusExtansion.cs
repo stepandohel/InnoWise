@@ -6,60 +6,50 @@ namespace MessageBus.DI
 {
     public static class MessageBusExtansion
     {
-        public static IServiceCollection AddMessageBus(this IServiceCollection services)
+        public static IServiceCollection AddMessageBus<T>(this IServiceCollection services, bool isDevelopment, string receiveEndpoint, string routingKey)
+            where T : class, IConsumer
         {
-            services.AddMassTransit(x =>
+            if (isDevelopment)
             {
-                x.AddConsumer<SignalRConsumer>();
-                x.AddConsumer<MassTransitConsumer>();
-                x.UsingRabbitMq((context, cfg) =>
+                services.AddMassTransit(x =>
                 {
-                    cfg.Publish<People>(x => x.ExchangeType = ExchangeType.Direct);
-                    cfg.ReceiveEndpoint("order-created-event", e =>
+                    x.AddConsumer<T>();
+                    x.UsingRabbitMq((context, cfg) =>
                     {
-                        e.ConfigureConsumeTopology = false;
-                        e.Bind<People>(x =>
+                        cfg.Publish<People>(x => x.ExchangeType = ExchangeType.Direct);
+                        cfg.ReceiveEndpoint(receiveEndpoint, e =>
                         {
-                            x.ExchangeType = ExchangeType.Direct;
-                            x.RoutingKey = "User";
+                            e.ConfigureConsumeTopology = false;
+                            e.Bind<People>(x =>
+                            {
+                                x.ExchangeType = ExchangeType.Direct;
+                                x.RoutingKey = routingKey;
+                            });
+                            e.ConfigureConsumer<T>(context);
                         });
-                        //e.Consumer<MassTransitConsumer>();
-                        e.ConfigureConsumer<SignalRConsumer>(context);
                     });
-
-                    cfg.ReceiveEndpoint("order-created-event", e =>
+                }
+                );
+            }
+            else
+            {
+                services.AddMassTransit(x =>
+                {
+                    x.AddConsumer<T>();
+                    x.UsingAzureServiceBus((context, cfg) =>
                     {
-                        e.ConfigureConsumeTopology = false;
-                        e.Bind<People>(x =>
+                        //cfg.Message<People>(x =>
+                        //x.SetEntityName("user-created-event"
+                        //));
+                        cfg.Host("Endpoint=sb://dogel-stepan.servicebus.windows.net/;SharedAccessKeyName=getstarted;SharedAccessKey=+lM/2hSjqtXMqDxAnG2n8WPoC9vQYI/xT+ASbIqBm2w=");
+                        cfg.ReceiveEndpoint(receiveEndpoint, e =>
                         {
-                            x.ExchangeType = ExchangeType.Direct;
-                            x.RoutingKey = "User";
+                            e.ConfigureConsumer<T>(context);
                         });
-                        e.Consumer<MassTransitConsumer>();
                     });
                 });
-            });
-
-            return services;
-        }
-
-        public static IBusControl GetBusControl(string endpoint, string key)
-        {
-            var busControl = Bus.Factory.CreateUsingRabbitMq(cfg =>
-            {
-                cfg.ReceiveEndpoint(endpoint, e =>
-                {
-                    e.ConfigureConsumeTopology = false;
-                    e.Bind<People>(x =>
-                    {
-                        x.ExchangeType = ExchangeType.Direct;
-                        x.RoutingKey = key;
-                    });
-                    e.Consumer<MassTransitConsumer>();
-                });
-            });
-
-            return busControl;
+            }
+                return services;
+            }
         }
     }
-}
