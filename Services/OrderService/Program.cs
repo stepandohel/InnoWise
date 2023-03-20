@@ -6,7 +6,7 @@ using SignalRLib.Hubs;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Host.AddElasticSearch();
+builder.Host.AddElasticSearch();
 builder.Services.AddMessageBus<SignalRConsumer>(builder.Environment.IsDevelopment(), "user-created-event", "User");
 builder.Services.AddSignalR();
 

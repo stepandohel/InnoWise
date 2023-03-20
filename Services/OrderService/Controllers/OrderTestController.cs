@@ -26,7 +26,7 @@ namespace OrderService.Controllers
                 Age = age,
                 Key = key
             }
-            //,x => x.SetRoutingKey("Order")
+            , x => x.SetRoutingKey("Order")
             );
 
             _logger.LogWarning("Message sended from Order");

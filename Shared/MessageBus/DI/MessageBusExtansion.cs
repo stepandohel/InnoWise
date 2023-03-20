@@ -41,7 +41,7 @@ namespace MessageBus.DI
                         //cfg.Message<People>(x =>
                         //x.SetEntityName("user-created-event"
                         //));
-                        cfg.Host("Endpoint=sb://dogel-stepan.servicebus.windows.net/;SharedAccessKeyName=getstarted;SharedAccessKey=+lM/2hSjqtXMqDxAnG2n8WPoC9vQYI/xT+ASbIqBm2w=");
+                        cfg.Host("Endpoint=sb://dogel-stepan.servicebus.windows.net/;SharedAccessKeyName=getstarted;SharedAccessKey=4RwLyth7oCGvuli9wROY0htBMvoTsJX/l+ASbFuCwgY=");
                         cfg.ReceiveEndpoint(receiveEndpoint, e =>
                         {
                             e.ConfigureConsumer<T>(context);

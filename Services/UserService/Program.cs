@@ -5,7 +5,7 @@ using MessageBus.DI;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-//builder.Host.AddElasticSearch();
+builder.Host.AddElasticSearch();
 builder.Services.AddMessageBus<MassTransitConsumer>(builder.Environment.IsDevelopment(), "order-created-event", "Order");
 
 builder.Services.AddSignalR();
